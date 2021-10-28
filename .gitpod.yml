@@ -15,10 +15,6 @@ tasks:
       .gitpod/drupal/ssh/01-check-private-ssh.sh
       .gitpod/drupal/drupalpod-setup.sh
 
-# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
-ports:
-  - port: 3000
-    onOpen: open-preview
 
 # VScode xdebug extension
 vscode:
@@ -59,3 +55,5 @@ ports:
     onOpen: ignore
   # projector port
   - port: 9999
+  - port: 3000
+  onOpen: open-preview
