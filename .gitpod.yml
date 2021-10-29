@@ -1,22 +1,14 @@
-image:
-  file: .gitpod/.gitpod.Dockerfile
+ports:
+  - port: 8000
+    onOpen: open-preview
+  # xdebug port
+  - port: 9000
+    onOpen: ignore
 
-# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - init: echo 'init script' # runs during prebuild
-    command: echo 'start script'
-  - init: |
-      .gitpod/download-ddev-images.sh
-      .gitpod/ddev-in-gitpod-setup.sh
-      .gitpod/drupal/drupalpod-setup.sh
-    command: |
-      .gitpod/ddev-in-gitpod-setup.sh
-      .gitpod/env-setup.sh
-      .gitpod/drupal/ssh/01-check-private-ssh.sh
-      .gitpod/drupal/drupalpod-setup.sh
+  - init: composer update
+    command: php -S 0.0.0.0:8000 -t public/
 
-
-# VScode xdebug extension
 vscode:
   extensions:
     # PHP extensions.
@@ -24,36 +16,5 @@ vscode:
     - wongjn.php-sniffer
     - neilbrayfield.php-docblocker
     - bmewburn.vscode-intelephense-client
-
     # Twig extensions.
     - mblode.twig-language-2
-
-    # Help extensions.
-    - drupal-mentoring.drupalpod-ext
-
-ports:
-  # Used by ddev - direct-bind https port
-  - port: 2222
-    onOpen: ignore
-  # Used by ddev - local db clients
-  - port: 3306
-    onOpen: ignore
-  # Used by projector
-  - port: 6942
-    onOpen: ignore
-  # Used by MailHog
-  - port: 8025
-    onOpen: ignore
-  # Used by phpMyAdmin
-  - port: 8036
-    onOpen: ignore
-  # Direct-connect ddev-webserver port that is the main port
-  - port: 8080
-    onOpen: ignore
-  # xdebug port
-  - port: 9000
-    onOpen: ignore
-  # projector port
-  - port: 9999
-  - port: 3000
-    onOpen: open-preview
