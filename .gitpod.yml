@@ -5,9 +5,10 @@ ports:
   - port: 9000
     onOpen: ignore
 
-tasks:
-  - init: composer update
-    command: php -S 0.0.0.0:8000 -t public/
+# Commenting out. We'll run these manually in class.
+#tasks:
+#  - init: composer install
+#    command: php -S 0.0.0.0:8000 -t project/
 
 vscode:
   extensions:
