@@ -1,0 +1,242 @@
+name: ddev-proj-symfony
+networks:
+  ddev_default:
+    external: true
+    name: ddev_default
+  default:
+    name: ddev-proj-symfony_default
+services:
+  db:
+    build:
+      args:
+        BASE_IMAGE: drud/ddev-dbserver-mariadb-10.2:v1.21.4
+        gid: "20"
+        uid: "501"
+        username: ashrafabed
+      context: /Users/ashrafabed/Sites/proj-symfony/.ddev/.dbimageBuild
+      dockerfile: Dockerfile
+    command: []
+    container_name: ddev-proj-symfony-db
+    environment:
+      COLUMNS: "132"
+      DDEV_DATABASE: mariadb:10.2
+      DDEV_HOSTNAME: proj-symfony.ddev.site
+      DDEV_PHP_VERSION: "8.1"
+      DDEV_PRIMARY_URL: https://proj-symfony.ddev.site
+      DDEV_PROJECT: proj-symfony
+      DDEV_PROJECT_TYPE: php
+      DDEV_ROUTER_HTTP_PORT: "79"
+      DDEV_ROUTER_HTTPS_PORT: "443"
+      DDEV_SITENAME: proj-symfony
+      DDEV_TLD: ddev.site
+      DOCKER_IP: 127.0.0.1
+      GOARCH: arm64
+      GOOS: darwin
+      HOST_DOCKER_INTERNAL_IP: ""
+      IS_DDEV_PROJECT: "true"
+      LINES: "20"
+      MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/proj-symfony-db/mysql_history
+      MYSQL_PWD: db
+      PGDATABASE: db
+      PGHOST: 127.0.0.1
+      PGPASSWORD: db
+      PGUSER: db
+      POSTGRES_DB: db
+      POSTGRES_PASSWORD: db
+      POSTGRES_USER: db
+      TZ: ""
+      USER: ashrafabed
+    healthcheck:
+      interval: 1s
+      retries: 120
+      start_period: 2m0s
+      timeout: 2m0s
+    hostname: proj-symfony-db
+    image: drud/ddev-dbserver-mariadb-10.2:v1.21.4-proj-symfony-built
+    labels:
+      com.ddev.app-type: php
+      com.ddev.approot: /Users/ashrafabed/Sites/proj-symfony
+      com.ddev.platform: ddev
+      com.ddev.site-name: proj-symfony
+    networks:
+      ddev_default: null
+      default: null
+    ports:
+    - host_ip: 127.0.0.1
+      mode: ingress
+      protocol: tcp
+      target: 3306
+    restart: "no"
+    stop_grace_period: 1m0s
+    user: "501:20"
+    volumes:
+    - source: database
+      target: /var/lib/mysql
+      type: volume
+      volume:
+        nocopy: true
+    - bind:
+        create_host_path: true
+      source: /Users/ashrafabed/Sites/proj-symfony/.ddev
+      target: /mnt/ddev_config
+      type: bind
+    - bind:
+        create_host_path: true
+      source: /Users/ashrafabed/Sites/proj-symfony/.ddev/db_snapshots
+      target: /mnt/snapshots
+      type: bind
+    - source: ddev-global-cache
+      target: /mnt/ddev-global-cache
+      type: volume
+      volume: {}
+    working_dir: /home/ashrafabed
+  dba:
+    container_name: ddev-proj-symfony-dba
+    environment:
+      HTTP_EXPOSE: 8036:80
+      HTTPS_EXPOSE: 8037:80
+      PMA_PASSWORD: root
+      PMA_USER: root
+      TZ: ""
+      UPLOAD_LIMIT: 1024M
+      VIRTUAL_HOST: proj-symfony.ddev.site
+    expose:
+    - "80"
+    healthcheck:
+      interval: 2m0s
+      retries: 1
+      timeout: 2s
+    hostname: proj-symfony-dba
+    image: phpmyadmin:5
+    labels:
+      com.ddev.app-type: php
+      com.ddev.approot: /Users/ashrafabed/Sites/proj-symfony
+      com.ddev.platform: ddev
+      com.ddev.site-name: proj-symfony
+    networks:
+      ddev_default: null
+      default: null
+    restart: "no"
+    working_dir: /root
+  web:
+    build:
+      args:
+        BASE_IMAGE: drud/ddev-webserver:v1.21.4
+        gid: "20"
+        uid: "501"
+        username: ashrafabed
+      context: /Users/ashrafabed/Sites/proj-symfony/.ddev/.webimageBuild
+      dockerfile: Dockerfile
+    cap_add:
+    - SYS_PTRACE
+    container_name: ddev-proj-symfony-web
+    environment:
+      ACQUIA_API_KEY: 2d8e8c02-f93f-4274-bdc6-54f3ab4b6cc8
+      ACQUIA_API_SECRET: E9+9HI0g8EVj5qNkA9S9i/2Yuh7iL4/rs8/ifVN/yq0=
+      COLUMNS: "132"
+      DDEV_COMPOSER_ROOT: /var/www/html
+      DDEV_DATABASE: mariadb:10.2
+      DDEV_DOCROOT: public
+      DDEV_FILES_DIR: ""
+      DDEV_HOSTNAME: proj-symfony.ddev.site
+      DDEV_PHP_VERSION: "8.1"
+      DDEV_PRIMARY_URL: https://proj-symfony.ddev.site
+      DDEV_PROJECT: proj-symfony
+      DDEV_PROJECT_TYPE: php
+      DDEV_ROUTER_HTTP_PORT: "79"
+      DDEV_ROUTER_HTTPS_PORT: "443"
+      DDEV_SITENAME: proj-symfony
+      DDEV_TLD: ddev.site
+      DDEV_VERSION: v1.21.4
+      DDEV_WEBSERVER_TYPE: nginx-fpm
+      DDEV_XDEBUG_ENABLED: "false"
+      DEPLOY_NAME: local
+      DOCKER_IP: 127.0.0.1
+      DOCROOT: public
+      DRUSH_ALLOW_XDEBUG: "1"
+      DRUSH_OPTIONS_URI: https://proj-symfony.ddev.site
+      GOARCH: arm64
+      GOOS: darwin
+      HOST_DOCKER_INTERNAL_IP: ""
+      HTTP_EXPOSE: 79:80,8025:8025
+      HTTPS_EXPOSE: 443:80,8026:8025
+      IS_DDEV_PROJECT: "true"
+      LINES: "20"
+      MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/proj-symfony-web/mysql_history
+      MYSQL_PWD: db
+      NODE_EXTRA_CA_CERTS: /mnt/ddev-global-cache/mkcert/rootCA.pem
+      PGDATABASE: db
+      PGHOST: db
+      PGPASSWORD: db
+      PGUSER: db
+      PHP_IDE_CONFIG: serverName=proj-symfony.ddev.site
+      SSH_AUTH_SOCK: /home/.ssh-agent/socket
+      TERMINUS_MACHINE_TOKEN: RcoxOGGORGK4uEE0ghw0FwJOocI4NLuoL-tStn8smiVMF
+      TZ: ""
+      USER: ashrafabed
+      VIRTUAL_HOST: proj-symfony.ddev.site
+      npm_config_cache: /mnt/ddev-global-cache/npm
+    external_links:
+    - ddev-router:proj-symfony.ddev.site
+    healthcheck:
+      interval: 1s
+      retries: 120
+      start_period: 2m0s
+      timeout: 2m0s
+    hostname: proj-symfony-web
+    image: drud/ddev-webserver:v1.21.4-proj-symfony-built
+    labels:
+      com.ddev.app-type: php
+      com.ddev.approot: /Users/ashrafabed/Sites/proj-symfony
+      com.ddev.platform: ddev
+      com.ddev.site-name: proj-symfony
+    networks:
+      ddev_default: null
+      default: null
+    ports:
+    - host_ip: 127.0.0.1
+      mode: ingress
+      protocol: tcp
+      target: 80
+    - host_ip: 127.0.0.1
+      mode: ingress
+      protocol: tcp
+      target: 443
+    restart: "no"
+    user: "501:20"
+    volumes:
+    - consistency: cached
+      source: ../
+      target: /var/www/html
+      type: bind
+    - bind:
+        create_host_path: true
+      read_only: true
+      source: /Users/ashrafabed/Sites/proj-symfony/.ddev
+      target: /mnt/ddev_config
+      type: bind
+    - bind:
+        create_host_path: true
+      read_only: true
+      source: /Users/ashrafabed/Sites/proj-symfony/.ddev/xhprof
+      target: /usr/local/bin/xhprof
+      type: bind
+    - source: ddev-global-cache
+      target: /mnt/ddev-global-cache
+      type: volume
+      volume: {}
+    - source: ddev-ssh-agent_socket_dir
+      target: /home/.ssh-agent
+      type: volume
+      volume: {}
+    working_dir: /var/www/html/
+volumes:
+  database:
+    external: true
+    name: proj-symfony-mariadb
+  ddev-global-cache:
+    external: true
+    name: ddev-global-cache
+  ddev-ssh-agent_socket_dir:
+    external: true
+    name: ddev-ssh-agent_socket_dir
