@@ -10,7 +10,11 @@
 
 DATABASE="${1:-db}"
 
-query="mysql://root:root@127.0.0.1:${DDEV_HOST_DB_PORT}/${DATABASE}"
+if [ "${DDEV_PROJECT_STATUS}" != "running" ]; then
+  echo "Project ${DDEV_PROJECT} is not running, starting it"
+  ddev start
+fi
+query="mysql://root:root@${DDEV_PROJECT}.${DDEV_TLD}:${DDEV_HOST_DB_PORT}/${DATABASE}"
 
 set -x
 open "$query" -a "/Applications/Sequel Ace.app/Contents/MacOS/Sequel Ace"

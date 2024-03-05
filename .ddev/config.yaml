@@ -2,10 +2,10 @@ APIVersion: v1.11.2
 name: proj-symfony
 type: php
 docroot: "public"
-php_version: "8.1"
+php_version: "8.2"
 webserver_type: nginx-fpm
-router_http_port: "80"
-router_https_port: "443"
+router_http_port: "82"
+router_https_port: "445"
 xdebug_enabled: false
 additional_hostnames: []
 additional_fqdns: []

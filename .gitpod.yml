@@ -13,7 +13,7 @@ ports:
 vscode:
   extensions:
     # PHP extensions.
-    - felixfbecker.php-debug
+    - xdebug.php-debug
     - wongjn.php-sniffer
     - neilbrayfield.php-docblocker
     - bmewburn.vscode-intelephense-client
